@@ -16,7 +16,7 @@ public class MainActivityModule {
     }
 
     @Provides
-    MainActivity mainActivity(){
+    public MainActivity mainActivity(){
         return activity;
     }
 }

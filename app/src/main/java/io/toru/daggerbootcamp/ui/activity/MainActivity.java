@@ -1,39 +1,76 @@
 package io.toru.daggerbootcamp.ui.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.TextView;
 
 import javax.inject.Inject;
 
 import io.toru.daggerbootcamp.R;
 import io.toru.daggerbootcamp.app.MainApplication;
 import io.toru.daggerbootcamp.network.INetworkApi;
+import io.toru.daggerbootcamp.ui.fragment.MainFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
+
     @Inject
     INetworkApi api;
+
+    private MainFragment mainFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        MainActivityComponent component = DaggerMainActvityComponent.builder()
+        MainActivityComponent component = DaggerMainActivityComponent.builder()
+//                .mainActivityModule(new MainActivityModule(this))
                 .mainApplicationComponent(((MainApplication)getApplication()).getComponent())
                 .build();
-
         component.inject(this);
 
-        Call<String> apis = api.getMovieList("스타워즈");
+        mainFragment = MainFragment.getNewInstance();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, mainFragment).commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView)MenuItemCompat.getActionView(searchMenuItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // 탐색 버튼을 눌렀을 때 적용된다.
+                searchMovie(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        return true;
+    }
+
+    private void searchMovie(String query){
+        Call<String> apis = api.getMovieList(query);
         apis.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, retrofit2.Response<String> response) {
                 Log.w("Network", "onResponse: " + response.code());
                 if(response.isSuccessful()){
                     Log.w("Network", "onResponse: " + response.body());
+                    // View 갱신해 주는 부분 들어가야 함.
+                    mainFragment.notifyFragmentViewRenewal();
                 }
                 else{
                     Log.w("Network", "onResponse: failed!!");
