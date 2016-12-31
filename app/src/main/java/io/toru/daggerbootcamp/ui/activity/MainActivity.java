@@ -9,10 +9,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import javax.inject.Inject;
 
 import io.toru.daggerbootcamp.R;
 import io.toru.daggerbootcamp.app.MainApplication;
+import io.toru.daggerbootcamp.model.MovieItemModel;
+import io.toru.daggerbootcamp.model.MovieModel;
 import io.toru.daggerbootcamp.network.INetworkApi;
 import io.toru.daggerbootcamp.ui.fragment.MainFragment;
 import retrofit2.Call;
@@ -36,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         component.inject(this);
 
+        initFragment();
+    }
+
+    private void initFragment(){
         mainFragment = MainFragment.getNewInstance();
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container, mainFragment).commit();
     }
@@ -62,15 +70,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void searchMovie(String query){
-        Call<String> apis = api.getMovieList(query);
-        apis.enqueue(new Callback<String>() {
+        Call<MovieModel> apis = api.getMovieList(query);
+        apis.enqueue(new Callback<MovieModel>() {
             @Override
-            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
+            public void onResponse(Call<MovieModel> call, retrofit2.Response<MovieModel> response) {
                 Log.w("Network", "onResponse: " + response.code());
                 if(response.isSuccessful()){
-                    Log.w("Network", "onResponse: " + response.body());
+                    Log.w("Network", "onResponse: " + new Gson().toJson(response.body()));
                     // View 갱신해 주는 부분 들어가야 함.
-                    mainFragment.notifyFragmentViewRenewal();
+                    MovieModel model = response.body();
+                    Log.w(TAG, "onResponse: size :: " + model.items.size());
+                    mainFragment.notifyFragmentViewRenewal(model.items);
                 }
                 else{
                     Log.w("Network", "onResponse: failed!!");
@@ -78,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<MovieModel> call, Throwable t) {
                 t.printStackTrace();
             }
         });

@@ -4,7 +4,7 @@
     android:layout_height="50dp">
 
     <TextView
-        android:id="@+id/adapter_movie_main"
+        android:id="@+id/adapter_movie_main_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="start|center_vertical"/>

@@ -1,5 +1,6 @@
 package io.toru.daggerbootcamp.network;
 
+import io.toru.daggerbootcamp.model.MovieModel;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -11,7 +12,7 @@ import retrofit2.http.Query;
 public interface INetworkApi {
 
     @GET("/v1/search/movie.json")
-    Call<String> getMovieList(@Query("query") String query/*,
+    Call<MovieModel> getMovieList(@Query("query") String query/*,
                               @Query("display")int numOfDisplay,
                               @Query("start") int start,
                               @Query("genre") String genre*/);

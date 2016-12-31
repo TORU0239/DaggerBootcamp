@@ -13,6 +13,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
@@ -50,8 +51,8 @@ public class MainApplicationModule {
         return new Retrofit.Builder()
                 .baseUrl(Util.NAVER_BASE_URL)
                 .client(client)
-//                            .addConverterFactory(GsonConverterFactory.create())
-                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+//                .addConverterFactory(ScalarsConverterFactory.create())
                 .build();
     }
 }
