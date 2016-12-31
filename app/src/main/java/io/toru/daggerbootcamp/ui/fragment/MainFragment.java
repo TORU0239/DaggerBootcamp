@@ -16,8 +16,9 @@ import com.squareup.picasso.Picasso;
 import java.util.LinkedList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.toru.daggerbootcamp.R;
-import io.toru.daggerbootcamp.app.MainApplication;
 import io.toru.daggerbootcamp.model.MovieItemModel;
 import io.toru.daggerbootcamp.ui.adapter.MainMovieAdapter;
 
@@ -30,9 +31,10 @@ public class MainFragment extends Fragment {
 
     public MainFragment() {}
 
-    private RecyclerView recyclerView;
-    private MainMovieAdapter mainMovieAdapter;
+    @BindView(R.id.main_recyclerview)
+    RecyclerView recyclerView;
 
+    private MainMovieAdapter mainMovieAdapter;
     private LinkedList<MovieItemModel> modelList;
 
     public static MainFragment getNewInstance(){
@@ -51,15 +53,14 @@ public class MainFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        picasso = MainApplication.getApp().getComponent().getPicasso();
-
-        recyclerView = (RecyclerView)view.findViewById(R.id.main_recyclerview);
         mainMovieAdapter = new MainMovieAdapter(modelList, picasso);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(mainMovieAdapter);

@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.toru.daggerbootcamp.R;
 import io.toru.daggerbootcamp.model.MovieItemModel;
 import io.toru.daggerbootcamp.util.Util;
@@ -19,18 +21,30 @@ import io.toru.daggerbootcamp.util.Util;
 public class MainMovieViewHolder extends RecyclerView.ViewHolder {
     private Picasso picasso;
 
+    @BindView(R.id.adapter_movie_title_text)
+    TextView movieTitle;
+
+    @BindView(R.id.adapter_movie_subtitle_text)
+    TextView movieSubTitle;
+
+    @BindView(R.id.adapter_movie_actor_text)
+    TextView movieActor;
+
+    @BindView(R.id.adapter_movie_director_text)
+    TextView movieDirector;
+
+    @BindView(R.id.adapter_movie_main_thumbnail)
+    ImageView movieImage;
+
+
+
     public MainMovieViewHolder(View itemView, Picasso picasso) {
         super(itemView);
         this.picasso = picasso;
+        ButterKnife.bind(this, itemView);
     }
 
     protected void updateView(MovieItemModel itemModel){
-        TextView movieTitle     = (TextView)itemView.findViewById(R.id.adapter_movie_title_text);
-        TextView movieSubTitle  = (TextView)itemView.findViewById(R.id.adapter_movie_subtitle_text);
-        TextView movieActor     = (TextView)itemView.findViewById(R.id.adapter_movie_actor_text);
-        TextView movieDirector  = (TextView)itemView.findViewById(R.id.adapter_movie_director_text);
-        ImageView movieImage    = (ImageView)itemView.findViewById(R.id.adapter_movie_main_thumbnail);
-
         if(picasso != null && !itemModel.image.equals("")) picasso.load(itemModel.image).into(movieImage);
 
         movieTitle.setText(Util.fromHtml(itemModel.title));
