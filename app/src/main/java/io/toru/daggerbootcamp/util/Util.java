@@ -10,4 +10,6 @@ public class Util {
     public static final String NAVER_BASE_URL = "https://openapi.naver.com/";
     public static final String NAVER_CLIENT_ID = "isOLaBw6C06tKlsRs8xn";
     public static final String NAVER_CLIENT_SECRET = "dYdx1rnfWX";
+
+    public static final String MOVIE_API_KEY = "82c0cf7654b24b9775536f602367c26d";
 }
