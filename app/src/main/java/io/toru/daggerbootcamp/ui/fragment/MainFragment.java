@@ -11,10 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.LinkedList;
 import java.util.List;
 
 import io.toru.daggerbootcamp.R;
+import io.toru.daggerbootcamp.app.MainApplication;
 import io.toru.daggerbootcamp.model.MovieItemModel;
 import io.toru.daggerbootcamp.ui.adapter.MainMovieAdapter;
 
@@ -23,6 +26,7 @@ import io.toru.daggerbootcamp.ui.adapter.MainMovieAdapter;
  */
 public class MainFragment extends Fragment {
     private static final String TAG = MainFragment.class.getSimpleName();
+    private Picasso picasso;
 
     public MainFragment() {}
 
@@ -41,6 +45,10 @@ public class MainFragment extends Fragment {
         modelList = new LinkedList<>();
     }
 
+    public void setPicasso(Picasso picasso) {
+        this.picasso = picasso;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_main, container, false);
@@ -49,8 +57,10 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+//        picasso = MainApplication.getApp().getComponent().getPicasso();
+
         recyclerView = (RecyclerView)view.findViewById(R.id.main_recyclerview);
-        mainMovieAdapter = new MainMovieAdapter(modelList);
+        mainMovieAdapter = new MainMovieAdapter(modelList, picasso);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(mainMovieAdapter);
     }

@@ -1,6 +1,10 @@
 package io.toru.daggerbootcamp.app;
 
+import android.content.Context;
+import android.support.v4.util.LogWriter;
 import android.util.Log;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
@@ -54,5 +58,11 @@ public class MainApplicationModule {
                 .addConverterFactory(GsonConverterFactory.create())
 //                .addConverterFactory(ScalarsConverterFactory.create())
                 .build();
+    }
+
+    @Provides
+    Picasso picasso(Context context){
+        Log.w("MainModule", "picasso: ");
+        return Picasso.with(context);
     }
 }

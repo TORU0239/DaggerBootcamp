@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
@@ -28,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     INetworkApi api;
 
+    @Inject
+    Picasso picasso;
+
     private MainFragment mainFragment;
 
     @Override
@@ -35,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         MainActivityComponent component = DaggerMainActivityComponent.builder()
-//                .mainActivityModule(new MainActivityModule(this))
                 .mainApplicationComponent(((MainApplication)getApplication()).getComponent())
                 .build();
         component.inject(this);
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initFragment(){
         mainFragment = MainFragment.getNewInstance();
+        mainFragment.setPicasso(picasso);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container, mainFragment).commit();
     }
 
