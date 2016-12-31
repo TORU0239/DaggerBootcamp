@@ -1,6 +1,7 @@
 package io.toru.daggerbootcamp.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -9,6 +10,7 @@ import com.squareup.picasso.Picasso;
 
 import io.toru.daggerbootcamp.R;
 import io.toru.daggerbootcamp.model.MovieItemModel;
+import io.toru.daggerbootcamp.util.Util;
 
 /**
  * Created by wonyoung on 2016. 12. 31..
@@ -31,7 +33,7 @@ public class MainMovieViewHolder extends RecyclerView.ViewHolder {
 
         if(picasso != null && !itemModel.image.equals("")) picasso.load(itemModel.image).into(movieImage);
 
-        movieTitle.setText(itemModel.title);
+        movieTitle.setText(Util.fromHtml(itemModel.title));
         movieSubTitle.setText(itemModel.subtitle);
         movieActor.setText(itemModel.actor);
         movieDirector.setText(itemModel.director);
