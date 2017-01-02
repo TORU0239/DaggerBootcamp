@@ -26,6 +26,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 @Module
 public class MainApplicationModule {
+
     @Provides
     INetworkApi api(Retrofit retrofit){
         Log.w("MainModule", "api: ");

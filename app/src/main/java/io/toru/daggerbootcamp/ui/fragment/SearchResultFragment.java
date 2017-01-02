@@ -25,11 +25,11 @@ import io.toru.daggerbootcamp.ui.adapter.MainMovieAdapter;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainFragment extends Fragment {
-    private static final String TAG = MainFragment.class.getSimpleName();
+public class SearchResultFragment extends Fragment {
+    private static final String TAG = SearchResultFragment.class.getSimpleName();
     private Picasso picasso;
 
-    public MainFragment() {}
+    public SearchResultFragment() {}
 
     @BindView(R.id.main_recyclerview)
     RecyclerView recyclerView;
@@ -37,13 +37,14 @@ public class MainFragment extends Fragment {
     private MainMovieAdapter mainMovieAdapter;
     private LinkedList<MovieItemModel> modelList;
 
-    public static MainFragment getNewInstance(){
-        return new MainFragment();
+    public static SearchResultFragment getNewInstance(){
+        return new SearchResultFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.w(TAG, "onCreate: ");
         modelList = new LinkedList<>();
     }
 
@@ -53,7 +54,7 @@ public class MainFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_search_result, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -68,7 +69,8 @@ public class MainFragment extends Fragment {
 
     public void notifyFragmentViewRenewal(List<MovieItemModel> itemModelList){
         Log.w(TAG, "notifyFragmentViewRenewal: ");
-        modelList.clear();
+        if(modelList != null) modelList.clear();
+        else modelList = new LinkedList<>();
         modelList.addAll(itemModelList);
         mainMovieAdapter.notifyDataSetChanged();
     }
