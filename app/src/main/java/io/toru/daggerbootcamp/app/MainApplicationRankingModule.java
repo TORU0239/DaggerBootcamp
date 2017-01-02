@@ -5,6 +5,7 @@ import android.util.Log;
 import java.io.IOException;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -23,26 +24,26 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class MainApplicationRankingModule {
     private static final String TAG = "RankingModule";
-
     @Provides
-    IMovieRankApi rankApi(Retrofit retrofit){
+    @Singleton
+    IMovieRankApi rankApi(@Named("movie_ranking_retrofit")Retrofit retrofit){
         Log.w(TAG, "rankApi: ");
         return retrofit.create(IMovieRankApi.class);
     }
-
     @Provides
-    @Named("movie_ranking")
-    Retrofit getRetrofit(OkHttpClient client){
+    @Singleton
+    @Named("movie_ranking_retrofit")
+    Retrofit getRetrofit(@Named("movie_ranking_okhttp")OkHttpClient client){
         Log.w(TAG, "getRetrofit: ");
         return new Retrofit.Builder()
-                            .baseUrl("http://www.kobis.or.kr/kobisopenapi/webservice/rest")
-                            .client(client)
-                            .addConverterFactory(GsonConverterFactory.create())
-                            .build();
+                .baseUrl("http://www.kobis.or.kr/kobisopenapi/webservice/rest")
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
     }
-
     @Provides
-    @Named("movie_ranking")
+    @Singleton
+    @Named("movie_ranking_okhttp")
     OkHttpClient getOkhttpClient(){
         Log.w(TAG, "getOkhttpClient: ");
         return new OkHttpClient.Builder()
@@ -56,5 +57,4 @@ public class MainApplicationRankingModule {
                     }
                 }).build();
     }
-
 }
