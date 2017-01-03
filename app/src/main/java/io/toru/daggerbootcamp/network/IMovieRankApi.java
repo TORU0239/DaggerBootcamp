@@ -11,6 +11,6 @@ import retrofit2.http.Query;
  */
 
 public interface IMovieRankApi {
-    @GET("/boxoffice/searchDailyBoxOfficeList.json?key=" + Util.MOVIE_API_KEY)
+    @GET("boxoffice/searchDailyBoxOfficeList.json?key=" + Util.MOVIE_API_KEY)
     Call<MovieRankingModel> getMovieRankingList(@Query("targetDt")String targetDt);
 }

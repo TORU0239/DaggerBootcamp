@@ -26,6 +26,8 @@ import io.toru.daggerbootcamp.network.IMovieRankApi;
 import io.toru.daggerbootcamp.network.INetworkApi;
 import io.toru.daggerbootcamp.ui.adapter.MainRankingAdapter;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainBookingFragment extends Fragment {
 
@@ -37,9 +39,6 @@ public class MainBookingFragment extends Fragment {
 
     @Inject
     IMovieRankApi api;
-
-    @Inject
-    INetworkApi networkApi;
 
     public MainBookingFragment() {}
 
@@ -74,14 +73,19 @@ public class MainBookingFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         if(api != null) {
-            Call<MovieRankingModel> apis = api.getMovieRankingList("20170101");
-        }
+            Call<MovieRankingModel> apis = api.getMovieRankingList("20170102");
+            apis.enqueue(new Callback<MovieRankingModel>() {
+                @Override
+                public void onResponse(Call<MovieRankingModel> call, Response<MovieRankingModel> response) {
+                    Log.w("MainBooking", "onResponse: " + response.code());
+                }
 
-        if(networkApi != null){
-            Log.w("Fragment", "onViewCreated: network api not null");
-        }
-        else{
-            Log.w("Fragment", "onViewCreated: network api null");
+                @Override
+                public void onFailure(Call<MovieRankingModel> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+
         }
     }
 }

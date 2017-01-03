@@ -1,6 +1,7 @@
 package io.toru.daggerbootcamp.ui.activity;
 
 import android.os.Bundle;
+import android.support.annotation.IntRange;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -16,11 +17,14 @@ import javax.inject.Inject;
 import io.toru.daggerbootcamp.R;
 import io.toru.daggerbootcamp.app.MainApplication;
 import io.toru.daggerbootcamp.model.MovieModel;
+import io.toru.daggerbootcamp.model.MovieRankingModel;
+import io.toru.daggerbootcamp.network.IMovieRankApi;
 import io.toru.daggerbootcamp.network.INetworkApi;
 import io.toru.daggerbootcamp.ui.fragment.MainBookingFragment;
 import io.toru.daggerbootcamp.ui.fragment.SearchResultFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";

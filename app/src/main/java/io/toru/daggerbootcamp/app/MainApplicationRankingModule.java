@@ -36,7 +36,7 @@ public class MainApplicationRankingModule {
     Retrofit getRetrofit(@Named("movie_ranking_okhttp")OkHttpClient client){
         Log.w(TAG, "getRetrofit: ");
         return new Retrofit.Builder()
-                .baseUrl("http://www.kobis.or.kr/kobisopenapi/webservice/rest")
+                .baseUrl("http://www.kobis.or.kr/kobisopenapi/webservice/rest/")
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
