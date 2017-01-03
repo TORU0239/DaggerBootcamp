@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         searchResultFragment = SearchResultFragment.getNewInstance();
         searchResultFragment.setPicasso(picasso);
         getSupportFragmentManager().beginTransaction().add(R.id.main_container, searchResultFragment).commit();
+        getSupportFragmentManager().beginTransaction().hide(searchResultFragment).commit();
     }
 
     @Override
@@ -87,13 +88,11 @@ public class MainActivity extends AppCompatActivity {
         apis.enqueue(new Callback<MovieModel>() {
             @Override
             public void onResponse(Call<MovieModel> call, retrofit2.Response<MovieModel> response) {
-                Log.w("Network", "onResponse: " + response.code());
                 if(response.isSuccessful()){
-                    Log.w("Network", "onResponse: " + new Gson().toJson(response.body()));
-                    // View 갱신해 주는 부분 들어가야 함.
                     MovieModel model = response.body();
                     Log.w(TAG, "onResponse: size :: " + model.items.size());
                     searchResultFragment.notifyFragmentViewRenewal(model.items);
+                    getSupportFragmentManager().beginTransaction().show(searchResultFragment).commit();
                 }
                 else{
                     Log.w("Network", "onResponse: failed!!");
