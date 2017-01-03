@@ -9,8 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -49,6 +51,7 @@ public class MainBookingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.w("MainBooking", "onCreate: ");
         rankingModelList = new LinkedList<>();
     }
 
@@ -77,14 +80,51 @@ public class MainBookingFragment extends Fragment {
                 @Override
                 public void onResponse(Call<MovieRankingModel> call, Response<MovieRankingModel> response) {
                     Log.w("MainBooking", "onResponse: " + response.code());
+                    if(response.isSuccessful()){
+//                        setMovieRankingData(response.body().dailyBoxOfficeList);
+                        List<MovieRankingItemModel> model = response.body().dailyBoxOfficeList;
+                        if(model != null){
+                            Log.w("MainBooking", "onResponse: size : " + model.size());
+                        }
+                        else{
+                            Log.w("MainBooking", "onResponse: null");
+                        }
+                    }
+                    else{
+                        Toast.makeText(getContext(), "Server Error!!", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 @Override
                 public void onFailure(Call<MovieRankingModel> call, Throwable t) {
                     t.printStackTrace();
+
                 }
             });
 
+            /*
+            Call<String> apis =api.getMovieRankingListString("20170102");
+            apis.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if(response.isSuccessful()){
+                        Log.w("MainBooking", "onResponse: " + response.body());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+            */
         }
+    }
+
+    private void setMovieRankingData(List<MovieRankingItemModel> rankingItemList){
+        if(rankingModelList != null) rankingModelList.clear();
+        else rankingModelList = new LinkedList<>();
+        rankingModelList.addAll(rankingItemList);
+        rankingAdapter.notifyDataSetChanged();
     }
 }
