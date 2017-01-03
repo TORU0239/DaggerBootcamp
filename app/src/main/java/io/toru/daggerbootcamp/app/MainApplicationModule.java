@@ -8,6 +8,8 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import io.toru.daggerbootcamp.network.INetworkApi;
@@ -26,13 +28,16 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 @Module
 public class MainApplicationModule {
+
     @Provides
+    @Singleton
     INetworkApi api(Retrofit retrofit){
         Log.w("MainModule", "api: ");
         return retrofit.create(INetworkApi.class);
     }
 
     @Provides
+    @Singleton
     OkHttpClient okHttpClient(){
         Log.w("MainModule", "okHttpClient: ");
         return new OkHttpClient.Builder()
@@ -50,6 +55,7 @@ public class MainApplicationModule {
     }
 
     @Provides
+    @Singleton
     Retrofit retrofit(OkHttpClient client){
         Log.w("MainModule", "retrofit: ");
         return new Retrofit.Builder()
@@ -61,6 +67,7 @@ public class MainApplicationModule {
     }
 
     @Provides
+    @Singleton
     Picasso picasso(Context context){
         Log.w("MainModule", "picasso: ");
         return Picasso.with(context);

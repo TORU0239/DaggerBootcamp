@@ -1,13 +1,13 @@
 package io.toru.daggerbootcamp.ui.activity;
 
 import android.os.Bundle;
+import android.support.annotation.IntRange;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -16,12 +16,15 @@ import javax.inject.Inject;
 
 import io.toru.daggerbootcamp.R;
 import io.toru.daggerbootcamp.app.MainApplication;
-import io.toru.daggerbootcamp.model.MovieItemModel;
 import io.toru.daggerbootcamp.model.MovieModel;
+import io.toru.daggerbootcamp.model.MovieRankingModel;
+import io.toru.daggerbootcamp.network.IMovieRankApi;
 import io.toru.daggerbootcamp.network.INetworkApi;
-import io.toru.daggerbootcamp.ui.fragment.MainFragment;
+import io.toru.daggerbootcamp.ui.fragment.MainBookingFragment;
+import io.toru.daggerbootcamp.ui.fragment.SearchResultFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -32,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     Picasso picasso;
 
-    private MainFragment mainFragment;
+    private SearchResultFragment searchResultFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +47,18 @@ public class MainActivity extends AppCompatActivity {
         component.inject(this);
 
         initFragment();
+        initSearchFragment();
     }
 
     private void initFragment(){
-        mainFragment = MainFragment.getNewInstance();
-        mainFragment.setPicasso(picasso);
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, mainFragment).commit();
+        MainBookingFragment mainBookingFragment = MainBookingFragment.newInstance();
+        getSupportFragmentManager().beginTransaction().add(R.id.main_container, mainBookingFragment).commit();
+    }
+
+    private void initSearchFragment(){
+        searchResultFragment = SearchResultFragment.getNewInstance();
+        searchResultFragment.setPicasso(picasso);
+        getSupportFragmentManager().beginTransaction().add(R.id.main_container, searchResultFragment).commit();
     }
 
     @Override
@@ -84,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                     // View 갱신해 주는 부분 들어가야 함.
                     MovieModel model = response.body();
                     Log.w(TAG, "onResponse: size :: " + model.items.size());
-                    mainFragment.notifyFragmentViewRenewal(model.items);
+                    searchResultFragment.notifyFragmentViewRenewal(model.items);
                 }
                 else{
                     Log.w("Network", "onResponse: failed!!");

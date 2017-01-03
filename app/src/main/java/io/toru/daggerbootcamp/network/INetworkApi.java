@@ -1,6 +1,8 @@
 package io.toru.daggerbootcamp.network;
 
 import io.toru.daggerbootcamp.model.MovieModel;
+import io.toru.daggerbootcamp.model.MovieRankingModel;
+import io.toru.daggerbootcamp.util.Util;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -47,3 +49,4 @@ public interface INetworkApi {
         yearto	integer(ex : 2008)	N	-	검색을 원하는 영화의 제작년도(최대)를 의미한다.
         yearto는 yearfrom과 함께 사용되어야 한다.
 */
+

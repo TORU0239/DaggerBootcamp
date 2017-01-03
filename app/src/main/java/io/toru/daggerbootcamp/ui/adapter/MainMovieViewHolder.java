@@ -1,7 +1,6 @@
 package io.toru.daggerbootcamp.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
