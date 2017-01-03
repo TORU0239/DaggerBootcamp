@@ -1,10 +1,13 @@
 package io.toru.daggerbootcamp.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.LinkedList;
 
+import io.toru.daggerbootcamp.R;
 import io.toru.daggerbootcamp.model.MovieRankingItemModel;
 
 /**
@@ -21,7 +24,8 @@ public class MainRankingAdapter extends RecyclerView.Adapter<MainRankingViewHold
 
     @Override
     public MainRankingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_ranking, parent, false);
+        return new MainRankingViewHolder(itemView);
     }
 
     @Override

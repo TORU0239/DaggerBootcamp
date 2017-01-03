@@ -9,8 +9,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -22,6 +26,7 @@ import io.toru.daggerbootcamp.app.MainApplicationRankingModule;
 import io.toru.daggerbootcamp.model.MovieModel;
 import io.toru.daggerbootcamp.model.MovieRankingItemModel;
 import io.toru.daggerbootcamp.model.MovieRankingModel;
+import io.toru.daggerbootcamp.model.MovieRankingOriginModel;
 import io.toru.daggerbootcamp.network.IMovieRankApi;
 import io.toru.daggerbootcamp.network.INetworkApi;
 import io.toru.daggerbootcamp.ui.adapter.MainRankingAdapter;
@@ -49,6 +54,7 @@ public class MainBookingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.w("MainBooking", "onCreate: ");
         rankingModelList = new LinkedList<>();
     }
 
@@ -59,7 +65,6 @@ public class MainBookingFragment extends Fragment {
         ButterKnife.bind(this, view);
         BookingFragmentComponent component = DaggerBookingFragmentComponent.builder()
                                                 .mainApplicationComponent(MainApplication.getApp().getComponent())
-                                                .bookingFragmentModule(new BookingFragmentModule(this))
                                                 .build();
         component.inject(this);
         return view;
@@ -73,19 +78,53 @@ public class MainBookingFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         if(api != null) {
-            Call<MovieRankingModel> apis = api.getMovieRankingList("20170102");
-            apis.enqueue(new Callback<MovieRankingModel>() {
+            Call<MovieRankingOriginModel> apis = api.getMovieRankingList("20170102");
+            apis.enqueue(new Callback<MovieRankingOriginModel>() {
                 @Override
-                public void onResponse(Call<MovieRankingModel> call, Response<MovieRankingModel> response) {
-                    Log.w("MainBooking", "onResponse: " + response.code());
+                public void onResponse(Call<MovieRankingOriginModel> call, Response<MovieRankingOriginModel> response) {
+                    if(response.isSuccessful()){
+                        Log.w("MainBooking", "onResponse: " + new Gson().toJson(response.body()));
+                        MovieRankingModel rankingModel = response.body().boxOfficeResult;
+                        Log.w("MainBooking", "onResponse: size:: " + rankingModel.dailyBoxOfficeList.size());
+                        setMovieRankingData(rankingModel.dailyBoxOfficeList);
+                    }
+                    else{
+                        Log.w("MainBooking", "onResponse: error?");
+                    }
                 }
 
                 @Override
-                public void onFailure(Call<MovieRankingModel> call, Throwable t) {
+                public void onFailure(Call<MovieRankingOriginModel> call, Throwable t) {
                     t.printStackTrace();
                 }
             });
 
+            /*
+            Call<String> apis =api.getMovieRankingListString("20170102");
+            apis.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if(response.isSuccessful()){
+                        Log.w("MainBooking", "onResponse: " + response.body());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+            */
         }
+        else {
+            Log.w("MainBooking", "onViewCreated: api null??" );
+        }
+    }
+
+    private void setMovieRankingData(List<MovieRankingItemModel> rankingItemList){
+        if(rankingModelList != null) rankingModelList.clear();
+        else rankingModelList = new LinkedList<>();
+        rankingModelList.addAll(rankingItemList);
+        rankingAdapter.notifyDataSetChanged();
     }
 }
