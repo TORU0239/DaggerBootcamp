@@ -12,15 +12,15 @@ public class MovieRankingItemModel {
     public String movieCd;
     public String movieNm;
     public String openDt;
-    public long salesAmt;
+    public String salesAmt;
     public float salesShare;
-    public int salesInten;
-    public int salesChange;
-    public long salesAcc;
-    public int audiCnt;
-    public int audiInten;
-    public int audiChange;
-    public int audiAcc;
-    public int scrnCnt;
-    public int showCnt;
+    public String salesInten;
+    public String salesChange;
+    public String salesAcc;
+    public String audiCnt;
+    public String audiInten;
+    public String audiChange;
+    public String audiAcc;
+    public String scrnCnt;
+    public String showCnt;
 }
