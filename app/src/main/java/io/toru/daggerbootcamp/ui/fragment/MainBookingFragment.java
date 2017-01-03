@@ -59,7 +59,6 @@ public class MainBookingFragment extends Fragment {
         ButterKnife.bind(this, view);
         BookingFragmentComponent component = DaggerBookingFragmentComponent.builder()
                                                 .mainApplicationComponent(MainApplication.getApp().getComponent())
-                                                .bookingFragmentModule(new BookingFragmentModule(this))
                                                 .build();
         component.inject(this);
         return view;
