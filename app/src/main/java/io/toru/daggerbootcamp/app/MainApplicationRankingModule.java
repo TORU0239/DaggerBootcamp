@@ -25,14 +25,15 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 @Module
 public class MainApplicationRankingModule {
     private static final String TAG = "RankingModule";
+
     @Provides
-    @Singleton
+    @MainApplicationScope
     IMovieRankApi rankApi(@Named("movie_ranking_retrofit")Retrofit retrofit){
         Log.w(TAG, "rankApi: ");
         return retrofit.create(IMovieRankApi.class);
     }
     @Provides
-    @Singleton
+    @MainApplicationScope
     @Named("movie_ranking_retrofit")
     Retrofit getRetrofit(@Named("movie_ranking_okhttp")OkHttpClient client){
         Log.w(TAG, "getRetrofit: ");
@@ -44,7 +45,7 @@ public class MainApplicationRankingModule {
                 .build();
     }
     @Provides
-    @Singleton
+    @MainApplicationScope
     @Named("movie_ranking_okhttp")
     OkHttpClient getOkhttpClient(){
         Log.w(TAG, "getOkhttpClient: ");

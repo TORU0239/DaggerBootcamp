@@ -30,14 +30,14 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class MainApplicationModule {
 
     @Provides
-    @Singleton
+    @MainApplicationScope
     INetworkApi api(Retrofit retrofit){
         Log.w("MainModule", "api: ");
         return retrofit.create(INetworkApi.class);
     }
 
     @Provides
-    @Singleton
+    @MainApplicationScope
     OkHttpClient okHttpClient(){
         Log.w("MainModule", "okHttpClient: ");
         return new OkHttpClient.Builder()
@@ -55,7 +55,7 @@ public class MainApplicationModule {
     }
 
     @Provides
-    @Singleton
+    @MainApplicationScope
     Retrofit retrofit(OkHttpClient client){
         Log.w("MainModule", "retrofit: ");
         return new Retrofit.Builder()
@@ -67,7 +67,7 @@ public class MainApplicationModule {
     }
 
     @Provides
-    @Singleton
+    @MainApplicationScope
     Picasso picasso(Context context){
         Log.w("MainModule", "picasso: ");
         return Picasso.with(context);

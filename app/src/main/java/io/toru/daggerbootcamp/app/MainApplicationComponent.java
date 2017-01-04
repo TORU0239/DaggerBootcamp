@@ -13,7 +13,7 @@ import io.toru.daggerbootcamp.network.INetworkApi;
  * Created by wonyoung on 2016. 12. 29..
  */
 
-@Singleton
+@MainApplicationScope
 @Component(modules = {MainApplicationModule.class, MainApplicationRankingModule.class, MainContextModule.class})
 public interface MainApplicationComponent {
     IMovieRankApi getMovieNetworkApi();
